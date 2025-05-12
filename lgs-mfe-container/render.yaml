@@ -1,0 +1,5 @@
+services:
+  - type: web
+    name: lgs-mfe-container
+    env: docker
+    plan: free

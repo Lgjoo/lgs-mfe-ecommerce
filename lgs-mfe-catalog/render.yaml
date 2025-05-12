@@ -1,0 +1,5 @@
+services:
+  - type: web
+    name: lgs-mfe-catalog
+    env: docker
+    plan: free
