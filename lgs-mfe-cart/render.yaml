@@ -1,5 +1,0 @@
-services:
-  - type: web
-    name: lgs-mfe-cart
-    env: docker
-    plan: free

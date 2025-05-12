@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: lgs-mfe-container
+    env: docker
+    repo: https://github.com/Lgjoo/lgs-mfe-ecommerce
+    region: oregon
+    plan: free
+    dockerContext: ./lgs-mfe-container
+
+  - type: web
+    name: lgs-mfe-catalog
+    env: docker
+    repo: https://github.com/Lgjoo/lgs-mfe-ecommerce
+    region: oregon
+    plan: free
+    dockerContext: ./lgs-mfe-catalog
+
+  - type: web
+    name: lgs-mfe-cart
+    env: docker
+    repo: https://github.com/Lgjoo/lgs-mfe-ecommerce
+    region: oregon
+    plan: free
+    dockerContext: ./lgs-mfe-cart
