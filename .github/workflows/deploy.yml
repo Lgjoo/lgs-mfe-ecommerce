@@ -23,7 +23,11 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Rename Dockerfile for production
         if: github.ref == 'refs/heads/main'
-        run: mv Dockerfile.prod Dockerfile
+        run: |
+          mv ./lgs-mfe-container/Dockerfile.prod ./lgs-mfe-container/Dockerfile
+          mv ./lgs-mfe-catalog/Dockerfile.prod ./lgs-mfe-catalog/Dockerfile
+          mv ./lgs-mfe-cart/Dockerfile.prod ./lgs-mfe-cart/Dockerfile
+
       - name: Build e push das imagens
         run: |
           docker build -t $REGISTRY/$IMAGE_OWNER/lgs-mfe-container ./lgs-mfe-container
