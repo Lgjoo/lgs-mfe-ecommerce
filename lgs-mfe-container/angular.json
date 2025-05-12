@@ -17,6 +17,7 @@
 				"build": {
 					"builder": "ngx-build-plus:browser",
 					"options": {
+  						"baseHref": "/",
 						"outputPath": "dist/lgs-mfe-container",
 						"index": "src/index.html",
 						"polyfills": [

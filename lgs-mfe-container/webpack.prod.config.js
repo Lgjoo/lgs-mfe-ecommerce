@@ -3,8 +3,8 @@ const { shareAll, withModuleFederationPlugin } = require('@angular-architects/mo
 module.exports = withModuleFederationPlugin({
 
   remotes: {
-    "lgs-mfe-catalog": "lgs-mfe-catalog@https://lgs-mfe-catalog.onrender.com/remoteEntry.js",
-    "lgs-mfe-cart": "lgs-mfe-cart@https://lgs-mfe-cart.onrender.com/remoteEntry.js"   
+    "lgs-mfe-catalog": "https://lgs-mfe-catalog.onrender.com/remoteEntry.js",
+    "lgs-mfe-cart": "https://lgs-mfe-cart.onrender.com/remoteEntry.js"   
   },
 
   shared: {
