@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: angular-app
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: npx http-server dist/lgs-mfe-ecommerce
+    plan: free
