@@ -7,6 +7,8 @@ COPY . .
 RUN npm install
 RUN npm run build
 
+RUN ls -l /app/dist/lgs-mfe-catalog
+
 FROM nginx:alpine
 
 COPY --from=builder /app/dist/lgs-mfe-catalog /usr/share/nginx/html
