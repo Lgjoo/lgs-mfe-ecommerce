@@ -9,12 +9,12 @@ RUN npm run build
 
 FROM nginx:alpine
 
-COPY --from=build /app/dist/lgs-mfe-cart /usr/share/nginx/html
+COPY --from=builder /app/dist/lgs-mfe-cart /usr/share/nginx/html
 
 RUN rm /etc/nginx/conf.d/default.conf
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 80
+EXPOSE 4202
 
 CMD ["nginx", "-g", "daemon off;"]
