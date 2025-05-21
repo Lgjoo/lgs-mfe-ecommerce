@@ -1,15 +1,20 @@
-FROM node:22
+FROM node:22 AS builder
 
 WORKDIR /app
 
-COPY package*.json ./
-
-RUN npm install -g @angular/cli
-
-RUN npm install
-
 COPY . .
 
-EXPOSE 4200
+RUN npm install
+RUN npm run build
 
-CMD ["npm", "start"]
+FROM nginx:alpine
+
+COPY --from=builder /app/dist/lgs-mfe-catalog /usr/share/nginx/html
+
+RUN rm /etc/nginx/conf.d/default.conf
+
+COPY nginx.conf /etc/nginx/conf.d
+
+EXPOSE 4201
+
+CMD ["nginx", "-g", "daemon off;"]
