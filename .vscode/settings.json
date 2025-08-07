@@ -1,0 +1,29 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.suggest.autoImports": true,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "files.associations": {
+    "*.scss": "scss"
+  },
+  "tailwindCSS.includeLanguages": {
+    "typescript": "javascript",
+    "html": "html"
+  },
+  "tailwindCSS.experimental.classRegex": [
+    ["class\\s*=\\s*['\"`]([^'\"`]*).*?['\"`]", "([^'\"`]*)"],
+    ["className\\s*=\\s*['\"`]([^'\"`]*).*?['\"`]", "([^'\"`]*)"]
+  ],
+  "emmet.includeLanguages": {
+    "typescript": "html"
+  },
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/dist": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true
+  }
+} 

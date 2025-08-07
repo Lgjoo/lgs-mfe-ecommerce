@@ -10,4 +10,8 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'lgs-mfe-container';
+
+  constructor() {
+    console.log('AppComponent constructor');
+  }
 }

@@ -15,7 +15,7 @@
 			"prefix": "app",
 			"architect": {
 				"build": {
-					"builder": "ngx-build-plus:browser",
+					"builder": "@angular-devkit/build-angular:browser",
 					"options": {
   						"baseHref": "/",
 						"outputPath": "dist/lgs-mfe-container",
@@ -36,9 +36,7 @@
 							"src/styles.scss"
 						],
 						"scripts": [],
-						"main": "src/main.ts",
-						"extraWebpackConfig": "webpack.config.js",
-						"commonChunk": false
+						"main": "src/main.ts"
 					},
 					"configurations": {
 						"production": {
@@ -54,8 +52,7 @@
 									"maximumError": "8kB"
 								}
 							],
-							"outputHashing": "all",
-							"extraWebpackConfig": "webpack.prod.config.js"
+							"outputHashing": "all"
 						},
 						"development": {
 							"optimization": false,
@@ -66,11 +63,10 @@
 					"defaultConfiguration": "production"
 				},
 				"serve": {
-					"builder": "ngx-build-plus:dev-server",
+					"builder": "@angular-devkit/build-angular:dev-server",
 					"configurations": {
 						"production": {
-							"buildTarget": "lgs-mfe-container:build:production",
-							"extraWebpackConfig": "webpack.prod.config.js"
+							"buildTarget": "lgs-mfe-container:build:production"
 						},
 						"development": {
 							"buildTarget": "lgs-mfe-container:build:development"
@@ -79,8 +75,7 @@
 					"defaultConfiguration": "development",
 					"options": {
 						"port": 4200,
-						"publicHost": "http://localhost:4200",
-						"extraWebpackConfig": "webpack.config.js"
+						"publicHost": "http://localhost:4200"
 					}
 				},
 				"extract-i18n": {
