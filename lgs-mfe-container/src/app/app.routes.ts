@@ -1,11 +1,16 @@
 import { Routes } from '@angular/router';
+import { loadRemoteModule } from '@angular-architects/module-federation';
 
 export const routes: Routes = [
   {
     path: 'catalog',
     loadComponent: () => {
       console.log('Loading catalog component...');
-      return import('lgs-mfe-catalog/Module').then(m => {
+      return loadRemoteModule({
+        type: 'module',
+        remoteEntry: 'http://localhost:4201/remoteEntry.js',
+        exposedModule: 'lgs-mfe-catalog/Module',
+      }).then(m => {
         console.log('Catalog module loaded:', m);
         return m.AppComponent;
       }).catch(err => {
@@ -18,7 +23,11 @@ export const routes: Routes = [
     path: 'cart',
     loadComponent: () => {
       console.log('Loading cart component...');
-      return import('lgs-mfe-cart/Module').then(m => {
+      return loadRemoteModule({
+        type: 'module',
+        remoteEntry: 'http://localhost:4202/remoteEntry.js',
+        exposedModule: 'lgs-mfe-cart/Module',
+      }).then(m => {
         console.log('Cart module loaded:', m);
         return m.AppComponent;
       }).catch(err => {
@@ -27,9 +36,4 @@ export const routes: Routes = [
       });
     }
   },
-  {
-    path: '',
-    redirectTo: '/catalog',
-    pathMatch: 'full'
-  }
 ];

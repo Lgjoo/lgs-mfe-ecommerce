@@ -5,7 +5,7 @@ module.exports = withModuleFederationPlugin({
   name: 'lgs-mfe-cart',
 
   exposes: {
-    './Module': './src/app/app.component.ts',
+    'lgs-mfe-cart/Component': './src/app/app.component.ts',
   },
 
   shared: {
