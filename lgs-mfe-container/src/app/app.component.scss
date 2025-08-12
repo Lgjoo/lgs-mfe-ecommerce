@@ -1,44 +1,8 @@
-// Estilos para o container principal
-.cart-sidebar {
-  transition: transform 0.3s ease-in-out;
-  
-  &.slide-in {
-    transform: translateX(0);
-  }
-  
-  &.slide-out {
-    transform: translateX(100%);
-  }
-}
+@use '@angular/material' as mat;
 
-// Overlay para mobile
-.cart-overlay {
-  backdrop-filter: blur(2px);
-}
-
-// Botão do carrinho com animação
-.cart-button {
-  transition: all 0.2s ease-in-out;
-  
-  &:hover {
-    transform: scale(1.05);
-  }
-  
-  &:active {
-    transform: scale(0.95);
-  }
-}
-
-// Indicador do carrinho
-.cart-indicator {
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
+// Customize the entire app. Change :root to your selector if you want to scope the styles.
+:root {
+  @include mat.sidenav-overrides((
+    container-elevation-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1)
+  ));
 }

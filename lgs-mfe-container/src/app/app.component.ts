@@ -1,11 +1,14 @@
 import { loadRemoteModule } from '@angular-architects/module-federation';
 import { CommonModule } from '@angular/common';
 import { Component, ViewChild, ViewContainerRef, OnInit, AfterViewInit } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
   standalone: true,
   selector: 'app-root',
-  imports: [CommonModule],
+  imports: [CommonModule, MatIconModule, MatButtonModule, MatSidenavModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
