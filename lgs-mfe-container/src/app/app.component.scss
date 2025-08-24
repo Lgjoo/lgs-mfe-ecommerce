@@ -3,6 +3,7 @@
 // Customize the entire app. Change :root to your selector if you want to scope the styles.
 :root {
   @include mat.sidenav-overrides((
-    container-elevation-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1)
+    container-elevation-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1),
+    container-background-color: red
   ));
 }

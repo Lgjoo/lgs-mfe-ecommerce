@@ -1,12 +1,16 @@
-<div class="flex flex-col h-screen w-screen">
+<div class="flex flex-col h-screen w-screen overflow-hidden">
   <header class="flex justify-between items-center p-4 border-b-1 shadow-sm bg-gray-100">
     <h1 class="text-2xl font-semibold">LGS E-Commerce</h1>
-    <button mat-icon-button (click)="toggleCart()">
-      <mat-icon>shopping_cart</mat-icon>
+    <button 
+      matIconButton
+      class="hover:bg-gray-200 transition-colors duration-200 rounded-full w-10 h-10 flex items-center justify-center" 
+      (click)="toggleCart()"
+    >
+      <mat-icon fontSet="material-icons-outlined">shopping_cart</mat-icon>
     </button>
   </header>
-  <main class="flex-auto">
-    <mat-drawer-container autosize>
+  <main class="flex-auto overflow-auto">
+    <mat-drawer-container class="w-full h-full max-w-full">
       <mat-drawer mode="over" [opened]="showCart" position="end">
         <ng-container #cartContent></ng-container>
       </mat-drawer>

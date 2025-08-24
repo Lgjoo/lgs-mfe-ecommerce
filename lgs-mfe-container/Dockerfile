@@ -4,8 +4,14 @@ WORKDIR /app
 
 COPY . .
 
-RUN npm install
-RUN npm run build
+COPY package*.json ./
+RUN npm install --verbose --progress=false
+
+# Simular build lento
+COPY . .
+RUN echo "🚧 Simulando build lento para teste científico..." && \
+    sleep 180 && \
+    npm run build
 
 FROM nginx:alpine
 
