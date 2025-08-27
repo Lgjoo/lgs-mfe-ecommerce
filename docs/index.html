@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🧪 Teste Científico: Micro Frontends</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        min-height: 100vh;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .header {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+      .mfe-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin: 40px 0;
+      }
+      .mfe-card {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 25px;
+        border-radius: 12px;
+        backdrop-filter: blur(10px);
+        text-align: center;
+        transition: transform 0.3s ease;
+      }
+      .mfe-card:hover {
+        transform: translateY(-5px);
+      }
+      .mfe-link {
+        display: inline-block;
+        background: #4caf50;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: bold;
+        margin-top: 15px;
+      }
+      .mfe-link:hover {
+        background: #45a049;
+      }
+      .status {
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 8px;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.1);
+      }
+      .info-box {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 20px;
+        border-radius: 12px;
+        margin: 20px 0;
+        backdrop-filter: blur(10px);
+      }
+      .deploy-info {
+        background: rgba(255, 193, 7, 0.2);
+        border-left: 4px solid #ffc107;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🧪 Teste Científico: Micro Frontends</h1>
+        <p>Análise de Downtime em Diferentes Estratégias de Deploy</p>
+      </div>
+
+      <div class="status" id="status">
+        🟢 Status: ONLINE - Todos os MFEs funcionando
+      </div>
+
+      <div class="info-box">
+        <h2>📋 Sobre o Projeto</h2>
+        <p>
+          Este é um projeto de pesquisa científica que analisa o impacto de
+          diferentes estratégias de CI/CD no downtime de aplicações Micro
+          Frontend. Os MFEs abaixo são as aplicações reais (Angular) buildadas e
+          servidas pelo GitHub Pages.
+        </p>
+      </div>
+
+      <div class="mfe-grid">
+        <div class="mfe-card">
+          <h2>🏠 Container MFE</h2>
+          <p>
+            Aplicação principal que orquestra e integra todos os outros Micro
+            Frontends
+          </p>
+          <a href="./container/" class="mfe-link">🚀 Acessar Container</a>
+        </div>
+
+        <div class="mfe-card">
+          <h2>📚 Catalog MFE</h2>
+          <p>Catálogo de produtos com listagem, filtros e busca</p>
+          <a href="./catalog/" class="mfe-link">📚 Acessar Catalog</a>
+        </div>
+
+        <div class="mfe-card">
+          <h2>🛒 Cart MFE</h2>
+          <p>Carrinho de compras com gestão de itens e checkout</p>
+          <a href="./cart/" class="mfe-link">🛒 Acessar Cart</a>
+        </div>
+      </div>
+
+      <div class="mfe-card">
+        <h2>📊 Monitoramento e Testes</h2>
+        <p>Links para monitoramento e testes científicos</p>
+        <div
+          style="
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 15px;
+            flex-wrap: wrap;
+          "
+        >
+          <a href="./health.html" class="mfe-link">🏥 Health Check</a>
+          <a href="./status.html" class="mfe-link">📊 Status Detalhado</a>
+          <a href="./metrics.html" class="mfe-link">📈 Métricas</a>
+        </div>
+      </div>
+
+      <div class="deploy-info">
+        <h3>🔬 Teste Científico</h3>
+        <p>
+          <strong>Objetivo:</strong> Comparar downtime entre estratégias Simple
+          Deploy (COM downtime) e Blue-Green (SEM downtime)
+        </p>
+        <p>
+          <strong>Monitoramento:</strong> UptimeRobot rastreia cada MFE a cada
+          minuto
+        </p>
+        <p>
+          <strong>Deploy:</strong> GitHub Actions simula downtime controlado
+          durante atualizações
+        </p>
+      </div>
+
+      <div class="info-box">
+        <h3>📚 Estratégias Testadas</h3>
+        <ul style="text-align: left">
+          <li>
+            <strong>🚀 Simple Deploy:</strong> Deploy direto com parada da
+            aplicação - Downtime esperado: 3-5 minutos
+          </li>
+          <li>
+            <strong>🔄 Blue-Green Deploy:</strong> Deploy paralelo com switch
+            automático - Downtime esperado: 0-30 segundos
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <script>
+      // Simular status em tempo real
+      function updateStatus() {
+        const now = new Date();
+        const statusElement = document.getElementById("status");
+
+        // Simular variação de status durante deploy
+        if (Math.random() < 0.05) {
+          // 5% chance de simular deploy
+          statusElement.innerHTML =
+            "🟡 Status: DEPLOYING... - MFEs em atualização";
+          statusElement.style.background = "rgba(255, 193, 7, 0.2)";
+
+          setTimeout(() => {
+            statusElement.innerHTML =
+              "🟢 Status: ONLINE - Todos os MFEs funcionando";
+            statusElement.style.background = "rgba(255,255,255,0.1)";
+          }, 8000);
+        }
+      }
+
+      setInterval(updateStatus, 30000); // Atualiza a cada 30s
+      updateStatus();
+    </script>
+  </body>
+</html>

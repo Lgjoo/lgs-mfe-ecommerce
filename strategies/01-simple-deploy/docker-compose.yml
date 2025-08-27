@@ -1,0 +1,66 @@
+version: "3.8"
+
+services:
+  lgs-mfe-container:
+    build:
+      context: ./lgs-mfe-container
+      dockerfile: Dockerfile
+    container_name: lgs-mfe-container
+    ports:
+      - "4200:4200"
+    networks:
+      - mfe-network
+    environment:
+      - NODE_ENV=production
+      - PORT=4200
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4200/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  lgs-mfe-catalog:
+    build:
+      context: ./lgs-mfe-catalog
+      dockerfile: Dockerfile
+    container_name: lgs-mfe-catalog
+    ports:
+      - "4201:4200"
+    networks:
+      - mfe-network
+    environment:
+      - NODE_ENV=production
+      - PORT=4200
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4200/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  lgs-mfe-cart:
+    build:
+      context: ./lgs-mfe-cart
+      dockerfile: Dockerfile
+    container_name: lgs-mfe-cart
+    ports:
+      - "4202:4200"
+    networks:
+      - mfe-network
+    environment:
+      - NODE_ENV=production
+      - PORT=4200
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4200/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  mfe-network:
+    external: true

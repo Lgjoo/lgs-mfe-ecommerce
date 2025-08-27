@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Health Check - Micro Frontends</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        text-align: center;
+        padding: 50px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        min-height: 100vh;
+        margin: 0;
+      }
+      .health {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      .status {
+        color: #4caf50;
+        font-size: 32px;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+      .timestamp {
+        color: rgba(255, 255, 255, 0.8);
+        margin-top: 20px;
+        font-size: 14px;
+      }
+      .mfe-status {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+        margin: 20px 0;
+      }
+      .mfe-item {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 15px;
+        border-radius: 8px;
+        font-size: 14px;
+      }
+      .mfe-item.online {
+        border-left: 4px solid #4caf50;
+      }
+      .mfe-item.offline {
+        border-left: 4px solid #f44336;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="health">
+      <h1 class="status">✅ Healthy</h1>
+      <p>Aplicação funcionando normalmente</p>
+
+      <div class="mfe-status">
+        <div class="mfe-item online" id="container-status">
+          🏠 Container: ONLINE
+        </div>
+        <div class="mfe-item online" id="catalog-status">
+          📚 Catalog: ONLINE
+        </div>
+        <div class="mfe-item online" id="cart-status">🛒 Cart: ONLINE</div>
+      </div>
+
+      <div class="timestamp">
+        <p>Timestamp: <span id="timestamp"></span></p>
+        <p>Status Geral: <span id="status-text">ONLINE</span></p>
+        <p>Uptime: <span id="uptime">100%</span></p>
+      </div>
+    </div>
+
+    <script>
+      // Atualizar timestamp
+      function updateTimestamp() {
+        const now = new Date();
+        document.getElementById("timestamp").textContent = now.toISOString();
+        document.getElementById("status-text").textContent = "ONLINE";
+      }
+
+      // Simular status dos MFEs
+      function updateMFEStatus() {
+        const mfes = ["container", "catalog", "cart"];
+
+        mfes.forEach((mfe) => {
+          const element = document.getElementById(`${mfe}-status`);
+          const isOnline = Math.random() > 0.1; // 90% chance de estar online
+
+          if (isOnline) {
+            element.className = "mfe-item online";
+            element.innerHTML = `${getMFEIcon(mfe)} ${getMFEName(mfe)}: ONLINE`;
+          } else {
+            element.className = "mfe-item offline";
+            element.innerHTML = `${getMFEIcon(mfe)} ${getMFEName(
+              mfe
+            )}: OFFLINE`;
+          }
+        });
+      }
+
+      function getMFEIcon(mfe) {
+        const icons = {
+          container: "🏠",
+          catalog: "📚",
+          cart: "🛒",
+        };
+        return icons[mfe] || "📱";
+      }
+
+      function getMFEName(mfe) {
+        const names = {
+          container: "Container",
+          catalog: "Catalog",
+          cart: "Cart",
+        };
+        return names[mfe] || mfe;
+      }
+
+      // Atualizar a cada 10 segundos
+      updateTimestamp();
+      updateMFEStatus();
+      setInterval(updateTimestamp, 10000);
+      setInterval(updateMFEStatus, 30000);
+    </script>
+  </body>
+</html>

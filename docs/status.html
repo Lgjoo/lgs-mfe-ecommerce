@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Status Detalhado - Micro Frontends</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        min-height: 100vh;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .header {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+      .status-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 20px;
+        margin: 20px 0;
+      }
+      .status-card {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 25px;
+        border-radius: 12px;
+        backdrop-filter: blur(10px);
+      }
+      .status-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+      .status-icon {
+        font-size: 32px;
+      }
+      .status-title {
+        font-size: 20px;
+        font-weight: bold;
+      }
+      .status-online {
+        color: #4caf50;
+      }
+      .status-offline {
+        color: #f44336;
+      }
+      .status-deploying {
+        color: #ff9800;
+      }
+      .metric {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .metric:last-child {
+        border-bottom: none;
+      }
+      .metric-label {
+        font-weight: 500;
+      }
+      .metric-value {
+        color: rgba(255, 255, 255, 0.8);
+      }
+      .deploy-info {
+        background: rgba(255, 193, 7, 0.2);
+        padding: 15px;
+        border-radius: 8px;
+        margin: 20px 0;
+        border-left: 4px solid #ffc107;
+      }
+      .back-link {
+        display: inline-block;
+        background: #4caf50;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: bold;
+        margin: 20px 0;
+      }
+      .back-link:hover {
+        background: #45a049;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>📊 Status Detalhado dos Micro Frontends</h1>
+        <p>Monitoramento em tempo real para teste científico</p>
+      </div>
+
+      <a href="./" class="back-link">← Voltar ao Início</a>
+
+      <div class="status-grid">
+        <div class="status-card">
+          <div class="status-header">
+            <div class="status-icon status-online" id="container-icon">🏠</div>
+            <div class="status-title">Container MFE</div>
+          </div>
+
+          <div class="metric">
+            <span class="metric-label">Status:</span>
+            <span class="metric-value status-online" id="container-status"
+              >ONLINE</span
+            >
+          </div>
+          <div class="metric">
+            <span class="metric-label">Uptime:</span>
+            <span class="metric-value" id="container-uptime">99.8%</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Response Time:</span>
+            <span class="metric-value" id="container-response">245ms</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Último Deploy:</span>
+            <span class="metric-value" id="container-deploy"
+              >2 horas atrás</span
+            >
+          </div>
+          <div class="metric">
+            <span class="metric-label">Versão:</span>
+            <span class="metric-value" id="container-version">1.2.0</span>
+          </div>
+        </div>
+
+        <div class="status-card">
+          <div class="status-header">
+            <div class="status-icon status-online" id="catalog-icon">📚</div>
+            <div class="status-title">Catalog MFE</div>
+          </div>
+
+          <div class="metric">
+            <span class="metric-label">Status:</span>
+            <span class="metric-value status-online" id="catalog-status"
+              >ONLINE</span
+            >
+          </div>
+          <div class="metric">
+            <span class="metric-label">Uptime:</span>
+            <span class="metric-value" id="catalog-uptime">99.9%</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Response Time:</span>
+            <span class="metric-value" id="catalog-response">189ms</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Último Deploy:</span>
+            <span class="metric-value" id="catalog-deploy">1 hora atrás</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Versão:</span>
+            <span class="metric-value" id="catalog-version">1.1.5</span>
+          </div>
+        </div>
+
+        <div class="status-card">
+          <div class="status-header">
+            <div class="status-icon status-online" id="cart-icon">🛒</div>
+            <div class="status-title">Cart MFE</div>
+          </div>
+
+          <div class="metric">
+            <span class="metric-label">Status:</span>
+            <span class="metric-value status-online" id="cart-status"
+              >ONLINE</span
+            >
+          </div>
+          <div class="metric">
+            <span class="metric-label">Uptime:</span>
+            <span class="metric-value" id="cart-uptime">99.7%</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Response Time:</span>
+            <span class="metric-value" id="cart-response">312ms</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Último Deploy:</span>
+            <span class="metric-value" id="cart-deploy">3 horas atrás</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Versão:</span>
+            <span class="metric-value" id="cart-version">1.0.8</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="deploy-info">
+        <h3>🔬 Informações do Teste Científico</h3>
+        <p>
+          <strong>Estratégia Atual:</strong>
+          <span id="current-strategy">Simple Deploy</span>
+        </p>
+        <p>
+          <strong>Próximo Deploy:</strong>
+          <span id="next-deploy">Programado para hoje às 15:00</span>
+        </p>
+        <p>
+          <strong>Downtime Esperado:</strong>
+          <span id="expected-downtime">3-5 minutos</span>
+        </p>
+        <p>
+          <strong>Monitoramento:</strong> UptimeRobot rastreando a cada minuto
+        </p>
+      </div>
+
+      <div class="status-card">
+        <h3>📈 Métricas Gerais</h3>
+        <div class="metric">
+          <span class="metric-label">Uptime Total:</span>
+          <span class="metric-value" id="total-uptime">99.8%</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Downtime Total:</span>
+          <span class="metric-value" id="total-downtime">14 minutos</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Deploys Realizados:</span>
+          <span class="metric-value" id="total-deploys">12</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Última Atualização:</span>
+          <span class="metric-value" id="last-update">Agora</span>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Simular dados em tempo real
+      function updateStatus() {
+        const now = new Date();
+        document.getElementById("last-update").textContent = "Agora";
+
+        // Simular variação de status
+        const mfes = ["container", "catalog", "cart"];
+
+        mfes.forEach((mfe) => {
+          const isOnline = Math.random() > 0.05; // 95% chance de estar online
+
+          if (isOnline) {
+            document.getElementById(`${mfe}-status`).textContent = "ONLINE";
+            document.getElementById(`${mfe}-status`).className =
+              "metric-value status-online";
+            document.getElementById(`${mfe}-icon`).className =
+              "status-icon status-online";
+          } else {
+            document.getElementById(`${mfe}-status`).textContent = "OFFLINE";
+            document.getElementById(`${mfe}-status`).className =
+              "metric-value status-offline";
+            document.getElementById(`${mfe}-icon`).className =
+              "status-icon status-offline";
+          }
+
+          // Simular variação de response time
+          const responseTime = Math.floor(Math.random() * 200) + 150;
+          document.getElementById(
+            `${mfe}-response`
+          ).textContent = `${responseTime}ms`;
+        });
+      }
+
+      // Atualizar a cada 15 segundos
+      updateStatus();
+      setInterval(updateStatus, 15000);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,328 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lgs-mfe-container
+  labels:
+    app: lgs-mfe-container
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1 # Maximum number of pods that can be created above desired replicas
+      maxUnavailable: 0 # Maximum number of pods that can be unavailable during update
+  selector:
+    matchLabels:
+      app: lgs-mfe-container
+  template:
+    metadata:
+      labels:
+        app: lgs-mfe-container
+    spec:
+      containers:
+        - name: lgs-mfe-container
+          image: lgs-mfe-container:latest
+          ports:
+            - containerPort: 4200
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 4200
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 4200
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/sh", "-c", "sleep 10"]
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: PORT
+              value: "4200"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lgs-mfe-catalog
+  labels:
+    app: lgs-mfe-catalog
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: lgs-mfe-catalog
+  template:
+    metadata:
+      labels:
+        app: lgs-mfe-catalog
+    spec:
+      containers:
+        - name: lgs-mfe-catalog
+          image: lgs-mfe-catalog:latest
+          ports:
+            - containerPort: 4200
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 4200
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 4200
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/sh", "-c", "sleep 10"]
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: PORT
+              value: "4200"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lgs-mfe-cart
+  labels:
+    app: lgs-mfe-cart
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: lgs-mfe-cart
+  template:
+    metadata:
+      labels:
+        app: lgs-mfe-cart
+    spec:
+      containers:
+        - name: lgs-mfe-cart
+          image: lgs-mfe-cart:latest
+          ports:
+            - containerPort: 4200
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 4200
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 4200
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/sh", "-c", "sleep 10"]
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: PORT
+              value: "4200"
+---
+# Services
+apiVersion: v1
+kind: Service
+metadata:
+  name: lgs-mfe-container-service
+spec:
+  selector:
+    app: lgs-mfe-container
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 4200
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lgs-mfe-catalog-service
+spec:
+  selector:
+    app: lgs-mfe-catalog
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 4200
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lgs-mfe-cart-service
+spec:
+  selector:
+    app: lgs-mfe-cart
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 4200
+  type: ClusterIP
+---
+# Ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: lgs-mfe-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/load-balance: "round_robin"
+spec:
+  rules:
+    - host: lgs-mfe.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: lgs-mfe-container-service
+                port:
+                  number: 80
+          - path: /catalog
+            pathType: Prefix
+            backend:
+              service:
+                name: lgs-mfe-catalog-service
+                port:
+                  number: 80
+          - path: /cart
+            pathType: Prefix
+            backend:
+              service:
+                name: lgs-mfe-cart-service
+                port:
+                  number: 80
+---
+# Horizontal Pod Autoscalers
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: lgs-mfe-container-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: lgs-mfe-container
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: lgs-mfe-catalog-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: lgs-mfe-catalog
+  minReplicas: 2
+  maxReplicas: 8
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: lgs-mfe-cart-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: lgs-mfe-cart
+  minReplicas: 2
+  maxReplicas: 8
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80
