@@ -1,7 +1,10 @@
+name: Deploy Docker Images
+
 on:
   push:
     branches:
       - main
+      - pages-test
 
 jobs:
   build-and-deploy:

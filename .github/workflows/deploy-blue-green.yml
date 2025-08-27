@@ -1,0 +1,43 @@
+# .github/workflows/deploy-blue-green.yml
+name: Blue-Green Deploy (SEM Downtime)
+
+on:
+  push:
+    branches: [main, pages-test]
+    paths: ["strategies/02-blue-green/**", "docs/**"]
+  workflow_dispatch:
+
+jobs:
+  deploy-blue-green:
+    runs-on: ubuntu-latest
+    name: Deploy SEM Downtime
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Preparar Blue-Green
+        run: |
+          echo "Preparando Blue-Green Deployment"
+          echo "Criando versão temporária..."
+
+          # Criar arquivo de status
+          echo "BLUE_GREEN_DEPLOY_$(date +%s)" > docs/deploy-status.txt
+
+      - name: Deploy Blue-Green
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
+          force_orphan: false
+
+      - name: Status do Deploy
+        run: |
+          echo "Deploy Blue-Green concluído"
+          echo "Downtime esperado: NÃO"
+          echo "UptimeRobot deve manter uptime"
+
+      - name: Notificar Conclusão
+        run: |
+          echo "Deploy Blue-Green concluído em: $(date)"
+          echo "URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"

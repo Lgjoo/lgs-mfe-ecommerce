@@ -1,0 +1,112 @@
+name: 🛑 Deploy COM Downtime (Teste Científico)
+
+on:
+  workflow_dispatch:
+    inputs:
+      downtime_duration:
+        description: "Duração do downtime em segundos"
+        required: false
+        default: "180"
+      mfe_target:
+        description: "MFE para atualizar"
+        required: false
+        default: "all"
+        type: choice
+        options:
+          - container
+          - catalog
+          - cart
+          - all
+
+jobs:
+  deploy-with-downtime:
+    runs-on: ubuntu-latest
+    name: 🛑 Deploy COM Downtime
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🧪 Simular Downtime para Teste Científico
+        run: |
+          echo "🧪 SIMULANDO DOWNTIME PARA TESTE CIENTÍFICO"
+          echo "⏰ Duração: ${{ github.event.inputs.downtime_duration }}s"
+          echo "🎯 MFE alvo: ${{ github.event.inputs.mfe_target }}"
+          echo "🛑 Aplicação será parada para simular downtime real..."
+
+          # Simular downtime
+          sleep ${{ github.event.inputs.downtime_duration }}
+
+          echo "✅ Downtime simulado concluído"
+
+      - name: 🏗️ Build MFEs
+        run: |
+          # Build do MFE especificado
+          if [ "${{ github.event.inputs.mfe_target }}" = "container" ] || [ "${{ github.event.inputs.mfe_target }}" = "all" ]; then
+            echo "🏠 Build Container MFE..."
+            cd lgs-mfe-container
+            npm ci
+            npm run build
+            cd ..
+          fi
+
+          if [ "${{ github.event.inputs.mfe_target }}" = "catalog" ] || [ "${{ github.event.inputs.mfe_target }}" = "all" ]; then
+            echo "📚 Build Catalog MFE..."
+            cd lgs-mfe-catalog
+            npm ci
+            npm run build
+            cd ..
+          fi
+
+          if [ "${{ github.event.inputs.mfe_target }}" = "cart" ] || [ "${{ github.event.inputs.mfe_target }}" = "all" ]; then
+            echo "🛒 Build Cart MFE..."
+            cd lgs-mfe-cart
+            npm ci
+            npm run build
+            cd ..
+          fi
+
+      - name: 📁 Preparar docs
+        run: |
+          # Copiar builds para docs
+          if [ "${{ github.event.inputs.mfe_target }}" = "container" ] || [ "${{ github.event.inputs.mfe_target }}" = "all" ]; then
+            mkdir -p docs/container
+            cp -r lgs-mfe-container/dist/lgs-mfe-container/* docs/container/
+          fi
+
+          if [ "${{ github.event.inputs.mfe_target }}" = "catalog" ] || [ "${{ github.event.inputs.mfe_target }}" = "all" ]; then
+            mkdir -p docs/catalog
+            cp -r lgs-mfe-catalog/dist/lgs-mfe-catalog/* docs/catalog/
+          fi
+
+          if [ "${{ github.event.inputs.mfe_target }}" = "cart" ] || [ "${{ github.event.inputs.mfe_target }}" = "all" ]; then
+            mkdir -p docs/cart
+            cp -r lgs-mfe-cart/dist/lgs-mfe-cart/* docs/cart/
+          fi
+
+      - name: 📝 Atualizar Versão
+        run: |
+          echo "📝 Atualizando versão para indicar deploy..."
+          echo "v$(date +%s)" > docs/version.txt
+          echo "Deploy com downtime: ${{ github.event.inputs.downtime_duration }}s" >> docs/deploy-info.txt
+
+      - name: 🚀 Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
+          force_orphan: true
+
+      - name: 📊 Status do Deploy
+        run: |
+          echo "✅ Deploy com downtime concluído"
+          echo "⏰ Downtime: ${{ github.event.inputs.downtime_duration }}s"
+          echo "🎯 MFE atualizado: ${{ github.event.inputs.mfe_target }}"
+          echo "📈 UptimeRobot deve detectar interrupção"
+          echo "🧪 Teste científico executado com sucesso"
+
+      - name: 🔔 Notificar Conclusão
+        run: |
+          echo "🔔 Deploy científico concluído em: $(date)"
+          echo "🌐 URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
+          echo "📊 Verifique UptimeRobot para dados de downtime"

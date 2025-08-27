@@ -1,0 +1,47 @@
+name: "Simple Deploy - COM Downtime"
+
+on:
+  workflow_dispatch:
+    inputs:
+      force_downtime:
+        description: "Forcar downtime para teste cientifico"
+        required: false
+        default: "false"
+      downtime_duration:
+        description: "Duracao do downtime em segundos"
+        required: false
+        default: "180"
+
+jobs:
+  deploy-simple:
+    runs-on: ubuntu-latest
+    name: "Deploy COM Downtime"
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4
+
+      - name: "Simular Downtime"
+        if: ${{ github.event.inputs.force_downtime == 'true' }}
+        run: |
+          echo "SIMULANDO DOWNTIME PARA TESTE CIENTIFICO"
+          echo "Duracao: ${{ github.event.inputs.downtime_duration }}s"
+          sleep ${{ github.event.inputs.downtime_duration }}
+          echo "Downtime simulado concluido"
+
+      - name: "Atualizar Versao"
+        run: |
+          echo "v$(date +%s)" > docs/version.txt
+          echo "Deploy Simple: $(date)" >> docs/deploy-info.txt
+
+      - name: "Deploy GitHub Pages"
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
+          force_orphan: true
+
+      - name: "Status Final"
+        run: |
+          echo "Deploy concluido em: $(date)"
+          echo "URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
