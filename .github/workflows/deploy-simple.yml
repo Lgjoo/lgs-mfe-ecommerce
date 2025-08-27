@@ -1,4 +1,4 @@
-name: "Simple Deploy - COM Downtime"
+name: Simple Deploy COM Downtime
 
 on:
   push:
@@ -18,13 +18,13 @@ on:
 jobs:
   deploy-simple:
     runs-on: ubuntu-latest
-    name: "Deploy COM Downtime"
+    name: Deploy COM Downtime
 
     steps:
-      - name: "Checkout"
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: "Simular Downtime"
+      - name: Simular Downtime
         if: ${{ github.event.inputs.force_downtime == 'true' }}
         run: |
           echo "SIMULANDO DOWNTIME PARA TESTE CIENTIFICO"
@@ -32,19 +32,19 @@ jobs:
           sleep ${{ github.event.inputs.downtime_duration }}
           echo "Downtime simulado concluido"
 
-      - name: "Atualizar Versao"
+      - name: Atualizar Versao
         run: |
           echo "v$(date +%s)" > docs/version.txt
           echo "Deploy Simple: $(date)" >> docs/deploy-info.txt
 
-      - name: "Deploy GitHub Pages"
+      - name: Deploy GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs
           force_orphan: true
 
-      - name: "Status Final"
+      - name: Status Final
         run: |
           echo "Deploy concluido em: $(date)"
           echo "URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
