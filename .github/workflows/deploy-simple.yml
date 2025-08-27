@@ -1,6 +1,9 @@
 name: "Simple Deploy - COM Downtime"
 
 on:
+  push:
+    branches: [main, pages-test]
+    paths: ["strategies/01-simple-deploy/**", "docs/**"]
   workflow_dispatch:
     inputs:
       force_downtime:
